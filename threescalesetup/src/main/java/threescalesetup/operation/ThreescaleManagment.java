@@ -32,7 +32,7 @@ public class ThreescaleManagment {
 	}
 	
 	public String sendGet(String apiUrl)throws Exception{
-		String url = "https://" +hostName+ apiUrl;
+		String url = "https://" +hostName+ + "/" + apiUrl;
 		HttpClient client = HttpClientBuilder.create().build();
 		HttpGet request = new HttpGet(url);
 		
@@ -54,7 +54,7 @@ public class ThreescaleManagment {
 		
 	public String sendPost(String apiUrl, List<NameValuePair> postParams) throws Exception {
 
-			String url = "https://" +hostName+ apiUrl;
+			String url = "https://" +hostName+ + "/" + apiUrl;
 			HttpPost post = new HttpPost(url);
 
 			// add header
@@ -92,7 +92,7 @@ public class ThreescaleManagment {
 	
 	public String sendDelete(String apiUrl, List<NameValuePair> deleteParams) throws Exception {
 
-		String url = "https://" +hostName+ apiUrl;
+		String url = "https://" +hostName+ + "/" + apiUrl;
 		
 		HttpEntityEnclosingRequestBase delete = new HttpPost(url){			
 			 @Override
