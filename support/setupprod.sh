@@ -11,12 +11,12 @@ oc project fisdemoprod
 echo "Setup the surrounding softwate and environment"
 echo
 echo "Start up MySQL for database access"
-oc create -f https://raw.githubusercontent.com/openshift/origin/master/examples/db-templates/mysql-ephemeral-template.json
+# oc create -f https://raw.githubusercontent.com/openshift/origin/master/examples/db-templates/mysql-ephemeral-template.json
 oc new-app --template=mysql-ephemeral --param=MYSQL_PASSWORD=password --param=MYSQL_USER=dbuser --param=MYSQL_DATABASE=sampledb
 
 echo "Start up Broker for bitcoin gateway"
-oc import-image amq62-openshift --from=registry.access.redhat.com/jboss-amq-6/amq62-openshift --confirm
-oc create -f projecttemplates/amq62-openshift.json
+# oc import-image amq62-openshift --from=registry.access.redhat.com/jboss-amq-6/amq62-openshift --confirm
+# oc create -f projecttemplates/amq62-openshift.json
 oc new-app --template=amq62-basic --param=MQ_USERNAME=admin --param=MQ_PASSWORD=admin --param=IMAGE_STREAM_NAMESPACE=fisdemo
 
 echo "Create Traditional Banking instance"
@@ -29,7 +29,8 @@ mvn fabric8:deploy
 
 
 cd ..
-oc process -f support/projecttemplates/template-prod.yml | oc create -f -
+# oc process -f support/projecttemplates/template-prod.yml | oc create -f -
 
-oc secret new-basicauth apicast-configuration-url-secret --password=https://143d1a90ea5d369a88ec35310f06b86fec8569a1c34c21eaffc9f9906947962a@fusedemo-admin.3scale.net
-oc new-app -f support/amptemplates/apicast.yml
+oc secret new-basicauth apicast-configuration-url-secret --password=https://3744f1c8a2cec6ca8bdaf553d9261cb1257956822a383ef1d954e6b57cd46ff2@red-hat-philprosser-admin.3scale.net
+# oc new-app -f support/amptemplates/apicast.yml
+oc new-app --template=3scale-gateway
