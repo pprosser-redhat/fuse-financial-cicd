@@ -45,7 +45,7 @@ objects:
           \"Comments?\", description: \"comments\", name: \"comments\"] ])  \n      print
           'promotionCheck' \n  \t\topenshiftTag(namespace: \"${env.uatnamespace}\",
           sourceStream: \"fisgateway-service\",  sourceTag: \"latest\", destinationnamespace:
-          \"${env.uatnamespace}\", destinationStream: \"fisgateway-service-uat\", destinationTag:
+          \"${env.uatnamespace}\", destinationStream: \"fisgateway-service\", destinationTag:
           \"uatready\")   \n  } \n  \n  stage('UAT') { \n    print 'UAT'\n    openshiftDeploy(namespace:
           \"${env.uatnamespace}\", deploymentConfig: \"fisgateway-service-uat\")\n\t}
           \ \n}"
