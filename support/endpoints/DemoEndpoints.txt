@@ -1,0 +1,26 @@
+List of endpoints for demo
+
+3Scale Production Endpoint 
+
+apigateway-fis-service-fisdemoprod.apps.demolab.local
+
+key: 4571f1d48fa85b6abd0e220b1afa39f1
+
+Developer Endpoint
+
+fisgateway-service-fisdemo.apps.demolab.local
+
+UAT End point
+
+fisgateway-service-uat-fisdemo.apps.demolab.local
+
+
+Account Details :-
+
+| ID     | ACCTNAME | BALANCE | SSN       | PHONE      | ADDR                        | STATE  |
+| ------ | -------- | -------:| --------- | ---------- | ----------------------------| ------ |
+| 223455 | Chris L  |   $1600 | 749980000 | 6364858533 | 4 BLACK DEER ST, STONE      | TX     |
+| 123456 | Simon C  |   $5000 | 987655663 | 7264947276 | 43 SLIVER EAGLE ST, RIVER   | MA     |
+| 234567 | Amber K  |    $700 | 424676543 | 4274558382 | 67 RED LION ST, ROCK        | NY     |
+| 345678 | Kelly J  |   $4400 | 987676543 | 3530880835 | 8 GREEN SHARK ST, MOUNTAIN  | CA     |
+
