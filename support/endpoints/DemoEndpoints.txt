@@ -5,6 +5,7 @@ List of endpoints for demo
 apigateway-fis-service-fisdemoprod.apps.demolab.local
 
 key: 4571f1d48fa85b6abd0e220b1afa39f1
+Restricted Key: 4bb9af4180fe69cc3ad0d901b1dcf063
 
 Developer Endpoint
 
