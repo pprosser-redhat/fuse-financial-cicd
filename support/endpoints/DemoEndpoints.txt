@@ -25,3 +25,4 @@ Account Details :-
 | 234567 | Amber K  |    $700 | 424676543 | 4274558382 | 67 RED LION ST, ROCK        | NY     |
 | 345678 | Kelly J  |   $4400 | 987676543 | 3530880835 | 8 GREEN SHARK ST, MOUNTAIN  | CA     |
 
+Nexus service url : http://nexus2.sharedservicespersistent.svc.cluster.local:8081
