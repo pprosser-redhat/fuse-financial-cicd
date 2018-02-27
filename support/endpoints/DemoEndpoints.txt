@@ -13,8 +13,7 @@ fisgateway-service-fisdemo.apps.demolab.local
 
 UAT End point
 
- 
-
+fisgateway-service-uat-fisdemo.apps.demolab.local
 
 Account Details :-
 
