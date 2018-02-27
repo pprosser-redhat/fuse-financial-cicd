@@ -1,0 +1,151 @@
+{
+  "swagger" : "2.0",
+  "info" : {
+    "version" : "1.0.0",
+    "title" : "FIS Gateway"
+  },
+  "host" : "fisdemo-3scale-apicast-production.apps.demolab.local",
+  "basePath" : "/demos",
+  "tags" : [ {
+    "name" : "sourcegateway",
+    "description" : "Banking Gateway"
+  } ],
+  "schemes" : [ "https" ],
+  "paths" : {
+    "/sourcegateway/balance/{acctid}" : {
+      "get" : {
+        "tags" : [ "sourcegateway" ],
+        "parameters" : [ 
+          {
+                               "name": "user_key",
+                               "in": "query",
+                               "description": "User Key, should have been provided during the registration process",
+                               "required": true,
+                               "type": "number",
+                               "format": "double",
+                               "x-data-threescale-name": "user_keys"
+                           },
+          
+          {
+          "name" : "acctid",
+          "in" : "path",
+          "description" : "",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "x-camelContextId" : "camelContext-a73e7fe1-456e-4e15-9926-fae906325f11",
+        "x-routeId" : "route1",
+                         "responses": {
+                                  "200": {
+                                      "description": "Successful response"
+                                         }
+                                      }
+      }
+    },
+    "/sourcegateway/logo" : {
+      "get" : {
+        "tags" : [ "sourcegateway" ],
+        "parameters" : [
+        {
+                               "name": "user_key",
+                               "in": "query",
+                               "description": "User Key, should have been provided during the registration process",
+                               "required": true,
+                               "type": "number",
+                               "format": "double",
+                               "x-data-threescale-name": "user_keys"
+                           }],
+        "x-camelContextId" : "camelContext-a73e7fe1-456e-4e15-9926-fae906325f11",
+        "x-routeId" : "route3",
+
+
+                         "responses": {
+                                  "200": {
+                                      "description": "Successful response"
+                                         }
+                                      }
+      }
+    },
+    "/sourcegateway/profile/{acctid}" : {
+      "get" : {
+        "tags" : [ "sourcegateway" ],
+        "parameters" : [ 
+          {
+                               "name": "user_key",
+                               "in": "query",
+                               "description": "User Key, should have been provided during the registration process",
+                               "required": true,
+                               "type": "number",
+                               "format": "double",
+                               "x-data-threescale-name": "user_keys"
+                           },
+          {
+          "name" : "acctid",
+          "in" : "path",
+          "description" : "",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "x-camelContextId" : "camelContext-a73e7fe1-456e-4e15-9926-fae906325f11",
+        "x-routeId" : "route2",
+
+                         "responses": {
+                                  "200": {
+                                      "description": "Successful response"
+                                         }
+                                      }
+      }
+    },
+    "/sourcegateway/transfer" : {
+      "post" : {
+        "tags" : [ "sourcegateway" ],
+        "parameters" : [ 
+        
+          {
+                               "name": "user_key",
+                               "in": "query",
+                               "description": "User Key, should have been provided during the registration process",
+                               "required": true,
+                               "type": "number",
+                               "format": "double",
+                               "x-data-threescale-name": "user_keys"
+                           }
+        ],
+        "x-camelContextId" : "camelContext-a73e7fe1-456e-4e15-9926-fae906325f11",
+        "x-routeId" : "route4"
+,
+
+                         "responses": {
+                                  "200": {
+                                      "description": "Successful response"
+                                         }
+                                      }
+      }
+    },
+    "/sourcegateway/transferwithjson" : {
+      "post" : {
+        "tags" : [ "sourcegateway" ],
+        "parameters" : [ 
+        {
+                               "name": "user_key",
+                               "in": "query",
+                               "description": "User Key, should have been provided during the registration process",
+                               "required": true,
+                               "type": "number",
+                               "format": "double",
+                               "x-data-threescale-name": "user_keys"
+                           }
+        ],
+        "x-camelContextId" : "camelContext-a73e7fe1-456e-4e15-9926-fae906325f11",
+        "x-routeId" : "route5"
+,
+
+                         "responses": {
+                                  "200": {
+                                      "description": "Successful response"
+                                         }
+                                      }
+      }
+    }
+  }
+}
