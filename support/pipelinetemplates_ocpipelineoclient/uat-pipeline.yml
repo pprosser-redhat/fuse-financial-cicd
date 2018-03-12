@@ -1,0 +1,92 @@
+apiVersion: v1
+kind: BuildConfig
+metadata:
+  annotations:
+    openshift.io/generated-by: OpenShiftNewApp
+    pipeline.alpha.openshift.io/uses: '[{"name": "uat-pipeline", "kind": "DeploymentConfig"}]'
+  creationTimestamp: null
+  labels:
+    app: pipeline-uat
+    name: uat-pipeline
+    template: pipeline-uat
+  name: uat-pipeline
+spec:
+  failedBuildsHistoryLimit: 5
+  nodeSelector: null
+  output: {}
+  postCommit: {}
+  resources: {}
+  runPolicy: Serial
+  source:
+    type: None
+  strategy:
+    jenkinsPipelineStrategy:
+      jenkinsfile: "pipeline {\n    agent none\n    stages {\n        stage ('build')
+        {\n            steps {\n                script {\n                    openshift.withCluster()
+        {\n                       // openshift.verbose()\n                        openshift.withProject('fisdemo')
+        {\n                            \n                           // def build =
+        openshift.startBuild(\"fisgateway-service\", \"--wait\")\n                           \n
+        \                              \n                            //def targetBuildConfig
+        = openshift.selector( \"bc\", \"fisgateway-service\" )\n                            def
+        targetBuild = openshift.startBuild(\"fisgateway-service\")\n              \n
+        \                           echo 'Waiting for build to be created...'\n                            targetBuild.watch\n
+        \                           {\n                                return it.count()
+        > 0\n                            }\n                            echo 'Build
+        created..'\n              \n                            targetBuild.watch\n
+        \                           {\n                                if( it.count()
+        == 0 ) \n                                {\n                                    echo
+        \"No builds are currently active...\"\n                                    return
+        false\n                                }\n                \n                                def
+        buildComplete = true\n                \n                                it.withEach\n
+        \                               {\n                                    def
+        individualBuild = it.object()\n                                    if( it.object().status.phase
+        != \"Complete\" ) buildComplete = false\n                                }\n
+        \               \n                                return buildComplete\n                            }
+        \n              \n                            echo \"Build completed...\"\n
+        \                           \n                        }\n                    }\n
+        \               }\n            }\n        }\n        \n        stage ('deploying
+        the new build') {\n            steps {\n                script {\n                    openshift.withCluster()
+        {\n                        openshift.withProject('fisdemo') {\n                                \n
+        \                           def deploymentConfig = openshift.selector(\"dc\",
+        \"fisgateway-service\")\n                            \n                            def
+        rm = deploymentConfig.rollout()\n                            \n                            //Rollout
+        latest deployment\n                            rm.latest()\n                            \n
+        \                           //Check Rollout status - blocks and waits for
+        rollout to complete\n                            rm.status()\n                            \n
+        \                       }   \n                    }\n                }\n            }\n
+        \       }\n        stage ('promotionCheck') {\n            steps {\n                script
+        {\n                    openshift.withCluster() {\n                        openshift.withProject('fisdemo')
+        {\n                                \n                            input \"Promote
+        to UAT?\"\n                            \n                            openshift.tag(\"fisdemo/fisgateway-service:latest\",
+        \"fisdemo/fisgateway-service:uatready\")\n                                \n
+        \                           \n                        }   \n                    }\n
+        \               }\n            }\n        }\n        stage ('nowDeployingToUAT')
+        {\n            steps {\n                script {\n                    openshift.withCluster()
+        {\n                        openshift.withProject('fisdemo') {\n                                \n
+        \                          \n                                \n                            \n
+        \                       }   \n                    }\n                }\n            }\n
+        \       } \n    }\n}\n\n\n\n\n//openshiftBuild(namespace: \"fisdemo\", buildConfig:
+        \"fisgateway-service\", showBuildLogs: \"true\")\n            \n    \n/*node('maven')
+        { \n  stage('build') { \n    print 'build'\n     openshiftBuild(namespace:
+        \"fisdemo\", buildConfig: \"fisgateway-service\", showBuildLogs: \"true\")\n
+        \ }           \n  stage('staging') {\n    print 'stage' \n    openshiftDeploy(namespace:
+        \"fisdemo\", deploymentConfig: \"fisgateway-service\")\n  } \n  stage ('promotionCheck')
+        { \n      def userInput = input( id: \"userInput\", message: \"Promote to
+        UAT?\", parameters: [ [$class: \"TextParameterDefinition\", defaultValue:
+        \"Comments?\", description: \"comments\", name: \"comments\"] ])  \n      print
+        'promotionCheck' \n  \t\topenshiftTag(namespace: \"fisdemo\", sourceStream:
+        \"fisgateway-service\",  sourceTag: \"latest\", destinationNamespace: \"fisdemo\",
+        destinationStream: \"fisgateway-service\", destinationTag: \"uatready\")   \n
+        \ } \n  \n  stage('UAT') { \n    print 'UAT'\n    openshiftDeploy(namespace:
+        \"fisdemo\", deploymentConfig: \"fisgateway-service-uat\")\n\t}  \n} */"
+    type: JenkinsPipeline
+  successfulBuildsHistoryLimit: 5
+  triggers:
+  - github:
+      secret: secret101
+    type: GitHub
+  - generic:
+      secret: secret101
+    type: Generic
+status:
+  lastVersion: 0

@@ -1,0 +1,110 @@
+apiVersion: v1
+kind: BuildConfig
+metadata:
+  annotations:
+    openshift.io/generated-by: OpenShiftNewApp
+    pipeline.alpha.openshift.io/uses: '[{"name": "ab-pipeline",  "kind": "DeploymentConfig"}]'
+  creationTimestamp: null
+  labels:
+    app: pipeline-ab
+    name: ab-pipeline
+    template: pipeline-ab
+  name: ab-pipeline
+spec:
+  failedBuildsHistoryLimit: 5
+  nodeSelector: null
+  output: {}
+  postCommit: {}
+  resources: {}
+  runPolicy: Serial
+  source:
+    type: None
+  strategy:
+    jenkinsPipelineStrategy:
+      jenkinsfile: "pipeline {\n    agent none\n        stages {\n            stage('moveToProd'){\n
+        \               steps {\n                    script{\n                        openshift.withCluster()
+        {\n                            //openshift.verbose()\n                            openshift.withProject('fisdemoprod')
+        {\n                                \n                                \n                                //
+        Make UAT version of the image available for AB testing\n                                openshift.tag(\"fisdemo/fisgateway-service:uatready\",
+        \"fisdemoprod/fisgateway-service-new:latest\")\n                                \n
+        \                               // Rollout lastest version\n                               //
+        openshift.selector(\"dc\", \"fisgateway-service-new\").rollout().latest()\n
+        \                               \n                                // Scale
+        temp new version ready for AB testing\n                                openshift.selector(\"dc\",
+        \"fisgateway-service-new\").scale(\"--replicas=1\")\n                                \n
+        \                               //Wait for pod  to become ready\n                                openshift.selector(\"dc\",
+        \"fisgateway-service-new\").related('pods').untilEach(1) {\n                                  return
+        (it.object().status.phase == \"Running\")\n                                }\n
+        \                               \n                               openshift.verbose(false)\n
+        \                           }\n                        }\n                    }\n
+        \               }\n            }\n            stage('createABRoute') {\n                steps
+        {\n                    script {\n                        def abroute = [\n
+        \                       \"apiVersion\": \"v1\",\n                        \"kind\":
+        \"Route\",\n                        \"metadata\": [\n                            \"labels\":
+        [\n                                'component': 'fisgateway-service-stable',\n
+        \                               'group': 'quickstarts',\n                                'project':
+        'fisgateway-service-stable',\n                                'provider':
+        's2i',\n                                'template': 'fisgateway-service',\n
+        \                               'version': '1.0.0'\n                            ],\n
+        \                           \"name\": \"fisgateway-service\",\n                            \"namespace\":
+        \"fisdemoprod\",\n                            \"annotations\" : [\n                                'haproxy.router.openshift.io/balance':
+        'roundrobin'\n                                ],\n                            ],\n
+        \                       \"spec\": [\n                            \"alternateBackends\":
+        [[\n                                \"kind\": \"Service\",\n                                \"name\":
+        \"fisgateway-service-new\",\n                                \"weight\": 30\n
+        \                           ]],\n                            \"host\": \"fisgateway-service-fisdemoprod.apps.demolab.local\",\n
+        \                           \"to\": [\n                                \"kind\":
+        \"Service\",\n                                \"name\": \"fisgateway-service-stable\",\n
+        \                               \"weight\": 70\n                            ],\n
+        \                       ]\n                    ]\n                    \n                    openshift.withCluster()
+        {\n                        openshift.withProject('fisdemoprod') {\n                            \n
+        \                           echo \"Deleting existing route\"\n                            \n
+        \                           openshift.selector(\"route\", \"fisgateway-service\").delete()\n
+        \                           \n                            echo \"Creating
+        Route\"\n                            def objs = openshift.create(abroute)\n
+        \                       }\n                        \n                    }\n
+        \               }\n            }\n            // To do, update 3Scale using
+        the 3Scale API\n        }\n    }\n}\n\n/*\n  stage('moveToProd'){\n    echo
+        \"UAT at ${env.uatnamespace} and PROD at ${env.prodnamespace}\"\n    openshiftTag
+        alias: \"false\",  destStream: \"fisgateway-service\", destTag: \"latest\",
+        destinationNamespace: \"${env.prodnamespace}\", namespace: \"${env.uatnamespace}\",
+        srcStream: \"fisgateway-service-uat\", srcTag: \"uatready\", verbose: \"true\"\n
+        \ }\n  \n  stage('StartNewServices') {\n    print 'Start new service with
+        one pod running' \n    openshiftScale depCfg: \"fisgateway-service-new\",
+        namespace: \"${env.prodnamespace}\", replicaCount: \"1\", verifyReplicaCount:
+        \"true\", verbose: \"true\"\n  }\n  \n  stage('UpdateRouteToAB') { \n    print
+        'deleteroute' \n    openshiftDeleteResourceByKey keys: \"fisgateway-service\",
+        namespace: \"${env.prodnamespace}\", types: \"route\", verbose: \"true\"\n
+        \   \n    print 'Update Route to only point to both new and stable service'
+        \n    openshiftCreateResource jsonyaml: \"{    'apiVersion': 'v1',    'kind':
+        'Route',    'metadata': {        'labels': {            'component': 'fisgateway-service-stable',
+        \           'group': 'quickstarts',            'project': 'fisgateway-service-stable',
+        \           'provider': 's2i',            'template': 'fisgateway-service',
+        \           'version': '1.0.0'        },        'name': 'fisgateway-service',
+        \       'namespace': '${env.prodnamespace}'    },    'spec': {        'alternateBackends':
+        [            {                'kind': 'Service',                'name': 'fisgateway-service-new',
+        \               'weight': 30            }        ],        'host': 'fisgateway-service-temp.apps.mkt2go.com',
+        \       'to': {            'kind': 'Service',            'name': 'fisgateway-service-stable',
+        \           'weight': 70        },        'wildcardPolicy': 'None'    }}\",
+        namespace: \"temp\", verbose: \"false\"\n  }\n  \n  stage('GetCurrentLimitId')
+        { \n    print 'Get Current Limit Id'\n    env.LIMIT_ID = sh (\n      script:
+        \"curl --silent -X GET \\\"${env.threescaleurl}/admin/api/application_plans/${env.appplanid}/metrics/${env.metricsid}/limits.xml?access_token=${env.apiaccesstoken}\\\"
+        --stderr - | sed -e 's,.*<id>\\\\([^<]*\\\\)</id>.*,\\\\1,g' \", \n      returnStdout:
+        true\n    ).trim()\n    echo env.LIMIT_ID\n  }\n  \n  stage('UpdateLimitToAB')
+        { \n    print 'Update 3scale Limit back to AB Testing mode'  \n    sh  \"echo
+        Updating Id ${env.LIMIT_ID} to less request ${env.ablimit} per min because
+        of AB Testing\"\n    sh  \"curl -s -o /dev/null -w \\\"%{http_code}\\\\n\\\"
+        -X PUT  \\\"${env.threescaleurl}/admin/api/application_plans/${env.appplanid}/metrics/${env.metricsid}/limits/${env.LIMIT_ID}.xml\\\"
+        -d \\'access_token=${env.apiaccesstoken}&period=minute&value=${env.ablimit}\\'\"
+        \ \n  }\n}\n*/\n\n\n"
+    type: JenkinsPipeline
+  successfulBuildsHistoryLimit: 5
+  triggers:
+  - github:
+      secret: secret101
+    type: GitHub
+  - generic:
+      secret: secret101
+    type: Generic
+status:
+  lastVersion: 0
