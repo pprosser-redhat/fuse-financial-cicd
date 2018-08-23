@@ -7,12 +7,18 @@ apigateway-fis-service-fisdemoprod.apps.penryn.demolab.local
 key: 4571f1d48fa85b6abd0e220b1afa39f1
 Restricted Key: 4bb9af4180fe69cc3ad0d901b1dcf063
 
-3Scale Production Endpoint (Demolab)
+3Scale Production Endpoint (Demolab - SaaS)
+
+apigateway-fis-service-fisdemoprod.apps.penryn.demolab.local
+
+key: 4571f1d48fa85b6abd0e220b1afa39f1
+Restricted Key: 4bb9af4180fe69cc3ad0d901b1dcf063
+
+3Scale Production Endpoint (Demolab - OCP)
 
 fisdemo-3scale-apicast-production.apps.penryn.demolab.local
 
 key: 7931ef985d097846b5c0e19de98d6d19
-Restricted Key: 4bb9af4180fe69cc3ad0d901b1dcf063
 
 Developer Endpoint
 
