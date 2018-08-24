@@ -28,7 +28,7 @@
             <corsHeaders key="Access-Control-Allow-Headers" value="Origin, Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers"/>
         </restConfiguration>
         <rest id="rest-a48f7a19-27f3-4f05-bb06-4247fb92b726" path="/sourcegateway">
-            <description>Banking Gateway</description>
+            <description id="description-992e605b-df22-4ef5-b7ee-6013e7aefa32">Banking Gateway</description>
             <get id="get-d44d2954-3519-4785-9fc7-4c32b1d94277" uri="balance/{acctid}">
                 <to uri="direct:getbalance"/>
             </get>
@@ -85,7 +85,7 @@
                             <json library="Jackson"/>
                         </unmarshal>
                         <setBody id="_setBody2">
-                            <simple>Changed again ${header.acctid} has balance of :${body['balance']}</simple>
+                            <simple>${header.acctid} has balance of :${body['balance']}</simple>
                         </setBody>
                         <onFallback id="_onFallback2">
                             <to id="_handelerro02" uri="direct:doNoresponse"/>
