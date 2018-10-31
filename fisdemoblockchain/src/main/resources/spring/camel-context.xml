@@ -11,18 +11,18 @@
         <property name="urlMappings" value="/demos/*"/>
     </bean>
     <bean class="com.redhat.fisdemoblockchain.MockBitcoinApp" id="mockBitcoinApp"/>
-    <camelContext id="camel" xmlns="http://camel.apache.org/schema/spring">
+    <camelContext id="fisBlockChain" xmlns="http://camel.apache.org/schema/spring">
         <restConfiguration apiContextPath="api-docs" bindingMode="json"
             component="servlet" contextPath="/demos">
             <apiProperty key="cors" value="true"/>
             <apiProperty key="api.title" value="Healthcare demo clinical API"/>
             <apiProperty key="api.version" value="1.0.0"/>
         </restConfiguration>
-        <rest path="/bitcoinaccount">
-            <get uri="balance/{acctid}">
+        <rest id="rest-bitcoinaccount" path="/bitcoinaccount">
+            <get id="get-balance" uri="balance/{acctid}">
                 <to uri="direct:getBalance"/>
             </get>
-            <get uri="transfer/{acctid}/{amt}/{recptid}">
+            <get id="get-transfer" uri="transfer/{acctid}/{amt}/{recptid}">
                 <to uri="direct:dotransfer"/>
             </get>
         </rest>

@@ -13,7 +13,7 @@
         class="org.springframework.jdbc.datasource.DataSourceTransactionManager" id="txManager">
         <property name="dataSource" ref="dataSource"/>
     </bean>
-    <camelContext id="camelContext-e10768f5-36e3-4032-a00c-9a26349cd88c" xmlns="http://camel.apache.org/schema/spring">
+    <camelContext id="accountService" xmlns="http://camel.apache.org/schema/spring">
         <dataFormats>
             <jaxb contextPath="generated_1481590729110" id="generated_1481590729110"/>
         </dataFormats>
@@ -23,14 +23,14 @@
             <apiProperty key="api.title" value="Healthcare demo clinical API"/>
             <apiProperty key="api.version" value="1.0.0"/>
         </restConfiguration>
-        <rest path="/account">
-            <get uri="profile/{acctid}">
+        <rest id="rest-account" path="/account">
+            <get id="get-profile" uri="profile/{acctid}">
                 <to uri="direct:getprofile"/>
             </get>
-            <put uri="profile/{acctid}">
+            <put id="put-profile" uri="profile/{acctid}">
                 <to uri="direct:createprofile"/>
             </put>
-            <get uri="transfer/{acctid}/{amt}/{recptid}">
+            <get id="get-transfer" uri="transfer/{acctid}/{amt}/{recptid}">
                 <to uri="direct:dotransfer"/>
             </get>
         </rest>

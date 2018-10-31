@@ -17,7 +17,7 @@
         <property name="servlet" ref="hystrixEventStreamServlet"/>
         <property name="urlMappings" value="/hystrix.stream"/>
     </bean>
-    <camelContext id="camelContext-a73e7fe1-456e-4e15-9926-fae906325f11" xmlns="http://camel.apache.org/schema/spring">
+    <camelContext id="fisDemoAggregator" xmlns="http://camel.apache.org/schema/spring">
         <restConfiguration apiContextPath="api-docs" bindingMode="json"
             component="servlet" contextPath="/demos" enableCORS="true">
             <apiProperty key="cors" value="true"/>
@@ -27,21 +27,21 @@
             <corsHeaders key="Access-Control-Allow-Methods" value="GET, HEAD, POST, PUT, DELETE, TRACE, OPTIONS, CONNECT, PATCH"/>
             <corsHeaders key="Access-Control-Allow-Headers" value="Origin, Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers"/>
         </restConfiguration>
-        <rest id="rest-a48f7a19-27f3-4f05-bb06-4247fb92b726" path="/sourcegateway">
+        <rest id="sourcegateway" path="/sourcegateway">
             <description>Banking Gateway</description>
-            <get id="get-d44d2954-3519-4785-9fc7-4c32b1d94277" uri="balance/{acctid}">
+            <get id="get-balance" uri="balance/{acctid}">
                 <to uri="direct:getbalance"/>
             </get>
-            <get id="get-421722e3-5b6a-4bc8-914b-32286fc03217" uri="profile/{acctid}">
+            <get id="get-profile" uri="profile/{acctid}">
                 <to uri="direct:getprofile"/>
             </get>
-            <get id="get-6e3f2545-3107-44f9-8b19-b8ea6eef3b37" uri="logo">
+            <get id="get-logo" uri="logo">
                 <to uri="direct:getlogo"/>
             </get>
-            <post id="post-ca25bc2a-529e-47c4-80b0-31eec06152a3" uri="transfer">
+            <post id="post-transfer" uri="transfer">
                 <to uri="direct:dotransfer"/>
             </post>
-            <post id="post-f69c81da-0ff9-4bff-a62c-6c3617d3450c" uri="transferwithjson">
+            <post id="post-transferwithjson" uri="transferwithjson">
                 <to uri="direct:transferwithjson"/>
             </post>
         </rest>

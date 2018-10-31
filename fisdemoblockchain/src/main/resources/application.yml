@@ -1,7 +1,7 @@
 camel:
   springboot:
     # The Camel context name
-    name: CamelActiveMQ
+    name: fisBlockChain
     main-run-controller: true
 
 # Binding health checks to a different port
