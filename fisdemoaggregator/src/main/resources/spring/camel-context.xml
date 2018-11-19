@@ -85,7 +85,7 @@
                             <json library="Jackson"/>
                         </unmarshal>
                         <setBody id="_setBody2">
-                            <simple>change ${header.acctid} has balance of :${body['balance']}</simple>
+                            <simple>${header.acctid} has balance of :${body['balance']}</simple>
                         </setBody>
                         <onFallback id="_onFallback2">
                             <to id="_handelerro02" uri="direct:doNoresponse"/>
