@@ -1,5 +1,17 @@
 List of endpoints for demo
 
+###############################
+RH RDS End Points
+###############################
+Dev  - fisgateway-service-fisdemo.apps.tntather-3822.openshiftworkshop.com
+Test - fisgateway-service-uat-fisdemo.apps.tntather-3822.openshiftworkshop.com
+Prod - fisdemo-3scale-apicast-production.apps.tntather-3822.openshiftworkshop.com
+
+Key  - 7931ef985d097846b5c0e19de98d6d19
+
+
+###############################
+
 3Scale Production Endpoint (SaaS)
 
 apigateway-fis-service-fisdemoprod.apps.penryn.demolab.local 
