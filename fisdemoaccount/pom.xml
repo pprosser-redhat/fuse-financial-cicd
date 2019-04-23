@@ -7,13 +7,6 @@
   <version>0.0.1-SNAPSHOT</version>
   <name>Fuse Integration Service :: Finance :: Account</name>
   <description>Fuse Integration Service - Traditional Account</description>
-<!--   <properties>
-		<bom.version>7.0.1.fuse-000008-redhat-4</bom.version>
-		<spring-boot.version>1.5.13.RELEASE</spring-boot.version>
-		
-		<maven-compiler-plugin.version>3.3</maven-compiler-plugin.version>
-		<maven-surefire-plugin.version>2.18.1</maven-surefire-plugin.version>
-	</properties> -->
 	<properties>
     <fuse.version>7.2.0.fuse-720020-redhat-00001</fuse.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -29,17 +22,6 @@
       </dependency>
     </dependencies>
   </dependencyManagement>
-  <!--  <dependencyManagement>
-		<dependencies>
-			<dependency>
-				<groupId>org.jboss.redhat-fuse</groupId>
-				<artifactId>fuse-springboot-bom</artifactId>
-				<version>${bom.version}</version>
-				<type>pom</type>
-				<scope>import</scope>
-			</dependency>
-		</dependencies>
-	</dependencyManagement> -->
   <dependencies>
     <dependency>
       <groupId>org.apache.camel</groupId>
@@ -142,51 +124,6 @@
           </releases>
         </pluginRepository>
   </pluginRepositories>
-  <!--  <build>
-    <defaultGoal>spring-boot:run</defaultGoal>
-    <plugins>
-      <plugin>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <version>${maven-compiler-plugin.version}</version>
-        <configuration>
-          <source>1.8</source>
-          <target>1.8</target>
-        </configuration>
-      </plugin>
-      <plugin>
-        <artifactId>maven-surefire-plugin</artifactId>
-        <version>${maven-surefire-plugin.version}</version>
-        <configuration>
-          <excludes>
-            <exclude>**/*KT.java</exclude>
-          </excludes>
-        </configuration>
-      </plugin>
-      <plugin>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-maven-plugin</artifactId>
-        <version>${spring-boot.version}</version>
-        <executions>
-          <execution>
-            <goals>
-              <goal>repackage</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.felix</groupId>
-        <artifactId>maven-bundle-plugin</artifactId>
-        <version>3.2.0</version>
-        <extensions>true</extensions>
-        <configuration>
-          <instructions>
-            <Import-Package>*,com.sun.el;version="[2,3)"</Import-Package>
-          </instructions>
-        </configuration>
-      </plugin>
-    </plugins>
-  </build> -->
   <build>
     <defaultGoal>spring-boot:run</defaultGoal>
     <plugins>
